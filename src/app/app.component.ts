@@ -44,9 +44,9 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this.form = new FormGroup({
-      adults: new FormControl(5),
-      kids: new FormControl(2),
-      nights: new FormControl(2),
+      adults: new FormControl(),
+      kids: new FormControl(),
+      nights: new FormControl(),
       hotels: new FormArray([this.emptyHotelFormGroup] as FormGroup[])
     })
   }
