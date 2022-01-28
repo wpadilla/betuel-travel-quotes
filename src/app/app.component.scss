@@ -1,0 +1,35 @@
+.app-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 0;
+  width: 100vw;
+
+  .grid-section{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: 20px;
+    width: 50vw;
+    padding: 0 25px;
+  }
+}
+
+.quotes-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+  padding: 30px;
+}
+
+.dollar-price {
+  width: 120px;
+}
+@media screen and (max-width: 600px) {
+
+  .app-form {
+    .grid-section{
+      width: 100vw;
+    }
+  }
+
+}
