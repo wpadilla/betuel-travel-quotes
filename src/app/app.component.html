@@ -1,0 +1,74 @@
+<div class="w-100">
+  <div class="ms-4 mt-4">
+    <label for="dollarPrice" class="form-label">Precio del dolar</label>
+    <input type="number" class="form-control dollar-price" [(ngModel)]="dollarPrice" id="dollarPrice" placeholder="Precio del Dollar">
+  </div>
+  <h1 class="text-center">Cotizaciones Betuel Travel</h1>
+</div>
+<form [formGroup]="form" (ngSubmit)="submitForm()" class="app-form">
+  <div class="grid-section">
+    <div class="mb-3">
+      <label for="kids" class="form-label">Niños</label>
+      <input type="number" class="form-control" id="kids" formControlName="kids">
+    </div>
+    <div class="mb-3">
+      <label for="nights" class="form-label">Noches</label>
+      <input type="number" class="form-control" id="nights" formControlName="nights">
+    </div>
+  </div>
+
+  <ng-container formArrayName="hotels">
+    <div *ngFor="let hotel of hotels.controls; index as i" class="d-flex align-items-center flex-wrap">
+      <div [formGroup]="parseToFormGroup(hotel)" class="grid-section">
+        <div class="mb-3">
+          <label for="name" class="form-label">Hotel</label>
+          <input type="text" class="form-control" id="name" formControlName="name">
+        </div>
+        <div class="mb-3" [formGroup]="getHabPriceFormGroup(i, 'singlePrice')">
+          <label for="singlePrice" class="form-label">Precio Sgl.</label>
+          <input type="number" class="form-control" id="singlePrice" formControlName="price" placeholder="Precio">
+          <input type="number" class="form-control mt-2" id="singleQuantity" formControlName="quantity" placeholder="Cantidad">
+        </div>
+        <div class="mb-3" [formGroup]="getHabPriceFormGroup(i, 'doublePrice')">
+          <label for="doublePrice" class="form-label">Precio Dbl.</label>
+          <input type="number" class="form-control" id="doublePrice" formControlName="price" placeholder="Precio">
+          <input type="number" class="form-control mt-2" id="doubleQuantity" formControlName="quantity" placeholder="Cantidad">
+        </div>
+        <div class="mb-3" [formGroup]="getHabPriceFormGroup(i, 'triplePrice')">
+          <label for="triplePrice" class="form-label">Precio Tpl.</label>
+          <input type="number" class="form-control" id="triplePrice" formControlName="price" placeholder="Precio">
+          <input type="number" class="form-control mt-2" id="tripleQuantity" formControlName="quantity" placeholder="Cantidad">
+        </div>
+        <div class="mb-3">
+          <label for="kidPrice" class="form-label">Precio Niños</label>
+          <input type="number" class="form-control" id="kidPrice" formControlName="kidPrice">
+        </div>
+      </div>
+      <button *ngIf="hotels.length > 1" class="btn btn-danger me-3" (click)="removeHotel(i)">Remove</button>
+      <button *ngIf="i === (hotels.length - 1)" class="btn btn-primary" (click)="addHotel()">Add</button>
+    </div>
+  </ng-container>
+  <div className="mt-3">
+    <button type="submit" class="btn btn-primary me-3">Calcular Cotizaciones</button>
+    <button *ngIf="quotes.length" type="button" class="btn btn-info" (click)="copyAllQuotes()">Copiar Todas</button>
+  </div>
+</form>
+
+<div class="quotes-container">
+  <div *ngFor="let quote of quotes; index as i" class="card">
+    <div class="card-body">
+      <h5 class="card-title">{{quote.hotel}}</h5>
+      <h6 class="card-subtitle mb-2 text-muted">Total: {{quote.total}}</h6>
+      <p class="card-text">
+          Noches: {{quote.nights}} <br/>
+          Adultos: {{quote.adults}} - {{quote.adultPrice}} <br/>
+        {{ quote.kidPrice ? 'Niños: ' + quote.kids + ' - ' + quote.kidPrice : '' }} <br *ngIf="quote.kidPrice"/>
+        {{ quote.singlePrice ? quote.singleText : '' }} <br *ngIf="quote.singlePrice"/>
+        {{ quote.doublePrice ? quote.doubleText : '' }} <br *ngIf="quote.doublePrice"/>
+        {{ quote.triplePrice ? quote.tripleText : '' }}
+        </p>
+      <a href="javascript:;" class="card-link" (click)="copyText(quote.textToCopy)">Copiar</a>
+      <a href="javascript:;" class="card-link text-danger" (click)="removeQuote(i)">Eliminar</a>
+    </div>
+  </div>
+</div>
