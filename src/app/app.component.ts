@@ -24,6 +24,7 @@ export class AppComponent implements OnInit {
       quantity: new FormControl(1),
     }),
     kidPrice: new FormControl(),
+    isPesos: new FormControl(false),
   });
   quotes: any[] = [];
   dollarPrice: number = 57.5;
@@ -51,11 +52,10 @@ export class AppComponent implements OnInit {
     })
   }
 
-  calculatePrice(price?: number, type: 1 | 2 | 3 | 'k' = 1, quantity: number = 1): number {
-    console.log(quantity, 'klk');
+  calculatePrice(price?: number, type: 1 | 2 | 3 | 'k' = 1, quantity: number = 1, isPesos?: boolean): number {
     if(!!price) {
       const {nights, adults, kids} = this.form.value;
-      return Math.ceil(((price * nights) * (type === 'k' ? kids : type)) * this.dollarPrice) * quantity;
+      return Math.ceil(((price * nights) * (type === 'k' ? kids : type)) * (isPesos ? 1 : this.dollarPrice)) * quantity;
     }
     return 0
   }
@@ -70,9 +70,9 @@ export class AppComponent implements OnInit {
     const nf = new Intl.NumberFormat('en-US');
 
     this.quotes = this.hotels.value.map((hotel: any) => {
-      const singlePrice = this.calculatePrice(hotel.singlePrice.price, 1, hotel.singlePrice.quantity);
-      const doublePrice = this.calculatePrice(hotel.doublePrice.price, 2, hotel.doublePrice.quantity);
-      const triplePrice = this.calculatePrice(hotel.triplePrice.price,3, hotel.triplePrice.quantity);
+      const singlePrice = this.calculatePrice(hotel.singlePrice.price, 1, hotel.singlePrice.quantity, hotel.isPesos);
+      const doublePrice = this.calculatePrice(hotel.doublePrice.price, 2, hotel.doublePrice.quantity, hotel.isPesos);
+      const triplePrice = this.calculatePrice(hotel.triplePrice.price,3, hotel.triplePrice.quantity, hotel.isPesos);
 
       const totalAdults = this.getAdultsPerHab(hotel.singlePrice, 1) + this.getAdultsPerHab(hotel.doublePrice, 2) + this.getAdultsPerHab(hotel.triplePrice, 3);
       const singleUnitPrice = singlePrice && Math.ceil(singlePrice / hotel.singlePrice.quantity);
@@ -94,7 +94,7 @@ export class AppComponent implements OnInit {
       const habText = singleText + doubleText + tripleText;
 
       const adultP = singlePrice + doublePrice + triplePrice;
-      const kidP = this.calculatePrice(hotel.kidPrice, 'k');
+      const kidP = this.calculatePrice(hotel.kidPrice, 'k',1, hotel.isPesos);
       const data: any = {
         adultPrice: `RD$${nf.format(adultP)}`,
         kidPrice: kidP ? `RD$${nf.format(kidP)}` : undefined,
@@ -148,6 +148,7 @@ ${habText}`,
         quantity: new FormControl(1),
       }),
       kidPrice: new FormControl(),
+      isPesos: new FormControl(false),
     }));
   }
 

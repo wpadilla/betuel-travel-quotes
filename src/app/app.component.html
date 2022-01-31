@@ -42,6 +42,10 @@
         <div class="mb-3">
           <label for="kidPrice" class="form-label">Precio Niños</label>
           <input type="number" class="form-control" id="kidPrice" formControlName="kidPrice">
+          <label for="isPesos" className="d-flex align-items-center cursor-pointer">
+            <input type="checkbox" class="me-2" id="isPesos" formControlName="isPesos">
+            <span className="ml-2">Precio en Pesos</span>
+          </label>
         </div>
       </div>
       <button *ngIf="hotels.length > 1" class="btn btn-danger me-3" (click)="removeHotel(i)">Remove</button>
