@@ -71,7 +71,7 @@
         {{ quote.doublePrice ? quote.doubleText : '' }} <br *ngIf="quote.doublePrice"/>
         {{ quote.triplePrice ? quote.tripleText : '' }}
         </p>
-      <a href="javascript:;" class="card-link" (click)="copyText(quote.textToCopy)">Copiar</a>
+      <a href="javascript:;" class="card-link" (click)="copyQuoteText(quote.textToCopy)">Copiar</a>
       <a href="javascript:;" class="card-link text-danger" (click)="removeQuote(i)">Eliminar</a>
     </div>
   </div>

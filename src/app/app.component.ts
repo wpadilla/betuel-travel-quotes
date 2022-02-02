@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
+import { copyText } from "../utils/text";
 
 @Component({
   selector: 'app-root',
@@ -121,14 +122,12 @@ ${habText}`,
     });
   }
 
-  copyText(text: string) {
-    navigator.clipboard.writeText(text);
+  copyQuoteText(text: string) {
+    copyText(text)
   }
-
   copyAllQuotes() {
     const text = this.quotes.map(item => item.textToCopy).join('');
-
-    this.copyText(text);
+    copyText(text);
   }
 
 
